@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator Pro</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particle" style="width: 4px; height: 4px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 6px; height: 6px; top: 20%; left: 80%; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 3px; height: 3px; top: 70%; left: 20%; animation-delay: 4s;"></div>
+    <div class="particle" style="width: 5px; height: 5px; top: 80%; left: 90%; animation-delay: 6s;"></div>
+    <div class="particle" style="width: 7px; height: 7px; top: 60%; left: 60%; animation-delay: 1s;"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>ASCII ART GENERATOR</h1>
+            <p>Transform Your Text into Digital Art</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2 class="section-title">Create Your Art</h2>
+                <!-- <form id="asciiForm"> -->
+                    <div class="form-group">
+                        <label for="text">Enter Your Text</label>
+    <form method="POST" action="/ascii-art">
+
+                        <textarea type="text" id="text" name="text" class="text-input" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="banner">Choose Style</label>
+                        <div class="select-wrapper">
+                            <select id="banner" name="banner" class="banner-select">
+                                <option value="standard">Standard</option>
+                                <option value="shadow">Shadow</option>
+                                <option value="thinkertoy">Thinkertoy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="generate-btn" id="generateBtn">
+                        Generate ASCII Art
+                    <!-- </form> -->
+                    </button>
+    </form>
+            </div>
+
+            <div class="result-section">
+                <h2 class="section-title">Your ASCII Art</h2>
+                <div class="ascii-output" >
+                    
+                <div class="ascii-result">{{.Result}}</div>
+        
+
+            </div>
+            <div class="copy-container">
+                <button class="copy-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+            </div>
+        </div>
+        </div>
+
+    
+
+    <div id="notification" class="notification"></div>
+
+    </body>
+</html>
