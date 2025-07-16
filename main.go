@@ -4,18 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"text/template"
 
 	ourcode "main.go/handlers"
 )
 
 func main() {
-	// http.HandleFunc("/css",http.StripPrefix("/css",http.FileServer(http.Dir("./css"))))
-
 	http.HandleFunc("/css/", func(w http.ResponseWriter, r *http.Request) {
-		temp, _ := template.ParseFiles("templates/err.html")
 		if r.URL.Path == "/css/" {
-			temp.Execute(w, nil)
+			ourcode.RenderWithError(w, "Page not found", 404)
 			return
 		}
 		http.StripPrefix("/css/", http.FileServer(http.Dir("./css"))).ServeHTTP(w, r)

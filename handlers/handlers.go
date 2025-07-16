@@ -6,26 +6,28 @@ import (
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	//  fmt.Fprintln(w, "<h1>Your welcome brother</h1>")
 	if r.Method != "GET" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		RenderWithError(w, "Method not allowed", 405)
 		return
 	}
 
 	if r.URL.Path != "/" {
-		http.Error(w, "Page not found", http.StatusNotFound)
+		RenderWithError(w, "Page not found", 404)
 		return
 	}
 
 	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
-		http.Error(w, "Template not found", http.StatusNotFound)
+		RenderWithError(w, "Template not found", 404)
+
 		return
 	}
 
 	data := PageData{}
 	if err := tmpl.Execute(w, data); err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+
+		RenderWithError(w, "Internal server error", 500)
+
 		return
 	}
 }
@@ -39,7 +41,9 @@ func AsciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse form data
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, "Bad request", http.StatusBadRequest)
+
+		RenderWithError(w, "Bad request", 400)
+
 		return
 	}
 
@@ -48,15 +52,17 @@ func AsciiArtHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Validate input
 	if text == "" {
-		renderWithError(w, text, banner, "/ Text is required")
+
+		RenderWithError(w, "Text not found", 400)
+
 		return
+
 	}
 
 	if banner == "" {
 		banner = "standard"
 	}
 
-	// Validate banner type
 	validBanners := map[string]bool{
 		"standard":   true,
 		"shadow":     true,
@@ -64,31 +70,21 @@ func AsciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !validBanners[banner] {
-		renderWithError(w, text, banner, " / Invalid banner type")
+
+		RenderWithError(w, "Template not found", 400)
+
 		return
 	}
 
-	// Check for invalid characters
-	for _, char := range text {
-		if char < 32 || char > 126 {
-			if char != '\n' && char != '\r' {
-				renderWithError(w, text, banner, " / Text contains unsupported characters")
-				return
-			}
-		}
-	}
-
-	// Generate ASCII art
 	result, err := GenerateASCIIArt(text, banner)
 	if err != nil {
-		renderWithError(w, text, banner, "     / Error generating ASCII art: "+err.Error())
+		RenderWithError(w, "Error generating ASCII art:", 500)
 		return
 	}
 
-	// Render result
 	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
-		http.Error(w, "Template not found", http.StatusNotFound)
+		RenderWithError(w, "Template not found", 404)
 		return
 	}
 
@@ -99,7 +95,7 @@ func AsciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := tmpl.Execute(w, data); err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		RenderWithError(w, "Internal server error", 500)
 		return
 	}
 }

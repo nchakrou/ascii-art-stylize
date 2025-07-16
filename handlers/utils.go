@@ -1,23 +1,20 @@
 package ourcode
 
 import (
+	"log"
 	"net/http"
 	"text/template"
 )
 
-func renderWithError(w http.ResponseWriter, input, banner, errorMsg string) {
-	tmpl, err := template.ParseFiles("templates/index.html")
+func RenderWithError(w http.ResponseWriter, errorMsg string, errNumb int) {
+	errstr := Initialiseerr(errNumb, errorMsg)
+	w.WriteHeader(errNumb)
+	errtempl, err := template.ParseFiles("templates/errors.html")
 	if err != nil {
-		http.Error(w, "Template not found", http.StatusNotFound)
-		return
+		log.Fatalf("Error parsing template: %v", err)
 	}
-
-	data := PageData{
-		Input:  input,
-		Banner: banner,
-		Error:  errorMsg,
+	if err := errtempl.Execute(w, errstr); err != nil {
+		// If template execution fails, fallback to plain error
+		http.Error(w, "Request could not be processed", http.StatusInternalServerError)
 	}
-
-	w.WriteHeader(http.StatusBadRequest)
-	tmpl.Execute(w, data)
 }

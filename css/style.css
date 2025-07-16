@@ -49,6 +49,7 @@ body {
 
 .input-section,
 .result-section {
+    
     display: grid;
     background-color: #2a2a3d;
     border-radius: 15px;
@@ -75,16 +76,17 @@ body {
 
 .text-input,
 .banner-select {
+      resize: none;
     width: 100%;
     padding: 12px 16px;
     font-size: 1rem;
     border-radius: 10px;
-    border: 1px solid #444;
+    border: 1px  #444;
     background-color: #1f1f2e;
     color: #fff;
 }
 
-.text-input:focus,
+
 
 
 .generate-btn {
@@ -105,8 +107,8 @@ body {
 
 .ascii-output {
     display: grid;
-    max-width: 1200px;
-    max-height: 900px;
+    max-width: 1000px;
+    max-height: 500px;
     background-color: #ffffff;
     color: #000000;
     padding: 20px;
@@ -127,7 +129,7 @@ body {
     }
 
     .header h1 {
-        font-size: 2rem;
+        font-size: 1.7rem;
     }
 
     .input-section,
